@@ -369,7 +369,9 @@
 			<li class="dropdown user">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 				<img alt="" src="assets/img/avatar3_small.jpg"/>
-				<span class="username username-hide-on-mobile">Nick </span>
+				<span class="username username-hide-on-mobile">
+				<?php foreach($userdata as $val){
+				  echo $val->first_name; }  ?> </span>
 				<i class="fa fa-angle-down"></i>
 				</a>
 				<ul class="dropdown-menu">

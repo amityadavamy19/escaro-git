@@ -22,7 +22,7 @@ class admin_dashboard extends CI_Controller {
 	 {
 		
 		parent::__construct(); 
-		 
+		$this->load->library('form_validation');
 		 
 		 
 	 } 
@@ -35,7 +35,7 @@ class admin_dashboard extends CI_Controller {
 		
 		
 		
-		(get_cookie('email')!='') ? $this->load->view('admin/admin_home') : $this->load->view('admin/admin_login');
+		(get_cookie('email')!='' || $this->session->userdata('username')!='' ) ? $this->load->view('admin/admin_home') : $this->load->view('admin/admin_login');
 		//($this->session->userdata('email')!='') ? $this->load->view('admin/admin_home') : $this->load->view('admin/admin_login');
 		
 		
@@ -53,43 +53,77 @@ class admin_dashboard extends CI_Controller {
 	
 	public function login()
 	{
+		 
+		 $this->form_validation->set_rules('login_email', 'Email','required|callback_username_check');
+		 $this->form_validation->set_rules('login_password', 'Password', 'callback_password_check');
 		
-		
-		
-		$this->load->view('admin/admin_login');
-		$newdata = array(
-        'username'  => 'johndoe',
-        'id'  => '1',
-        'first_name'=> 'johndoe',
-        'email'     => 'johndoe@some-site.com',
-        'logged_in' => TRUE
-        );
 
-		$this->session->set_userdata($newdata);
+         if ($this->form_validation->run() == FALSE)
+         {
+             $this->load->view('admin/admin_login');
+         }
+         else
+         {
+         
 		
-		$cookie = array(
- 
-		   'email'   => 'CW Cookie',
-		 
-		   'value'  => 'This is Demonstration of how to set cookie in CI',
-		 
-		   'expire' => '3600',
-		 
-		   'domain' => 'your-domain-name',
-		 
-		   'path'   => '/',
-		 
-		   'secure' => TRUE
- 
-        );
+			 $newdata = array(
+				'username'  => $_POST['login_email'],
+				'logged_in' => TRUE
+			 );
+
+			 $this->session->set_userdata($newdata);
+			
+			 $cookie = array(
+	 
+			   'email'  => 'email',
+			   'value'  => $_POST['login_email'],
+			   'expire' => '3600',
+			   'domain' => 'your-domain-name',
+			   'path'   => '/',
+			   'secure' => TRUE
+	 
+            );
 		
-		$this->input->set_cookie($cookie);
-		
-        $this->load->view('admin/admin_home');
+		 //$this->input->set_cookie($cookie);
+		 
+		 $this->load->model('admin_model');
+		 $data['userdata'] = $this->admin_model->getUser($_POST['login_email']);
+         $this->load->view('admin/admin_home',$data);
+         
 	
-		
+		 }
 		
 	}
+	
+	function username_check($str)
+	{
+		$this->load->model('admin_model');
+
+		if ($this->admin_model->checkUsername($str))
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('username_check', 'The  %s  do not exist');            
+			return false;
+		}
+	}
+	function password_check($str)
+	{
+		$this->load->model('admin_model');
+
+		if ($this->admin_model->checkPasswod($str))
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('password_check', 'The Entered %s  is wrong');            
+			return false;
+		}
+	}
+	
 	
 	public function register()
 	{
