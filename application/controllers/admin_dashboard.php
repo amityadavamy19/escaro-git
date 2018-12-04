@@ -23,7 +23,7 @@ class admin_dashboard extends CI_Controller {
 		
 		parent::__construct(); 
 		$this->load->library('form_validation');
-		 
+		$this->load->helper('string'); 
 		 
 	 } 
 	 
@@ -95,6 +95,38 @@ class admin_dashboard extends CI_Controller {
 		
 	}
 	
+	public function register()
+	{
+		
+		$this->form_validation->set_rules('fname', 'First Name','trim|required|alpha');
+		$this->form_validation->set_rules('lname', 'Last Name','trim|required|alpha');
+		$this->form_validation->set_rules('phone', 'Phone','trim|required|numeric');
+		$this->form_validation->set_rules('signup_email', 'Email','callback_admin_check');
+		$this->form_validation->set_rules('signup_password', 'Password', 'trim|required|min_length[5]|max_length[12]');
+		$this->form_validation->set_rules('signup_rpassword', 'Password', 'trim|required|matches[signup_password]');
+		
+		
+		
+		if ($this->form_validation->run() == FALSE)
+         {
+             $this->load->view('admin/admin_login');
+         }
+         else
+         {
+			
+			
+			 $token = random_string('alnum', 16);
+			 $this->load->model('admin_model');
+			 $data = array('first_name'=> htmlspecialchars($this->input->post('fname', TRUE)), 'last_name'=>htmlspecialchars($this->input->post('lname', TRUE)), 'email'=>htmlspecialchars($this->input->post('signup_email', TRUE)), 'password'=>md5($this->input->post('signup_password', TRUE)), 'phone'=>htmlspecialchars($this->input->post('phone', TRUE)), 'access_token'=>$token);
+			 
+			 $this->admin_model->addAdmin($data);
+			 $this->load->view('admin/admin_signupsuccess');
+		 }
+		
+		
+		
+	}
+	
 	function username_check($str)
 	{
 		$this->load->model('admin_model');
@@ -109,6 +141,27 @@ class admin_dashboard extends CI_Controller {
 			return false;
 		}
 	}
+	
+	function admin_check($user)
+	{
+		$this->load->model('admin_model');
+
+		if ($this->admin_model->checkAdmin($user))
+		{    
+	
+	        $this->form_validation->set_message('username_check', 'The  %s  already exist');            
+			return false;
+			
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	
+	
+	
 	function password_check($str)
 	{
 		$this->load->model('admin_model');
@@ -125,14 +178,7 @@ class admin_dashboard extends CI_Controller {
 	}
 	
 	
-	public function register()
-	{
-		
-		$this->load->view('admin/admin_login');
-		
-		
-		
-	}
+	
 	
 	
 	public function logout()

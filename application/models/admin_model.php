@@ -36,5 +36,27 @@ class admin_model extends CI_Model {
 		$result = $query->result();
 		return $result;
    }
+   
+   function addAdmin($param)
+    {   
+	
+	    $result = $this->db->insert('admin',$param);
+		return $result;
+   }
+	
+	function checkAdmin($user)
+    {   
+	    $this->db->where('email', $user);
+		$query = $this->db->get('admin');
+		if ($query->num_rows() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+   }
+	
+	
+	
 	
 }
