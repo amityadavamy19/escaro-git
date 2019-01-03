@@ -35,8 +35,13 @@ class admin_dashboard extends CI_Controller {
 		
 		
 		
-		(get_cookie('email')!='' || $this->session->userdata('username')!='' ) ? $this->load->view('admin/admin_home') : $this->load->view('admin/admin_login');
-		//($this->session->userdata('email')!='') ? $this->load->view('admin/admin_home') : $this->load->view('admin/admin_login');
+		
+		if(get_cookie('username')!='' || $this->session->userdata('email')!='') : 
+		   
+		   $this->load->view('admin/admin_home');
+		else:
+		   $this->load->view('admin/admin_login');
+		endif;
 		
 		
 	}
@@ -65,9 +70,20 @@ class admin_dashboard extends CI_Controller {
          else
          {
          
-		
+		     $this->load->model('admin_model');
+		     $data['userdata'] = $this->admin_model->getUser($_POST['login_email']);
+			
+			 foreach($data['userdata'] as $users)
+			 {
+				 $fname = $users->first_name ; 
+				 $phone = $users->phone ; 
+				 $email = $users->email ;
+			 }
+			 
 			 $newdata = array(
-				'username'  => $_POST['login_email'],
+				'email'  => $email,
+				'fname'  => $fname,
+				'phone'  => $phone,
 				'logged_in' => TRUE
 			 );
 
@@ -75,20 +91,20 @@ class admin_dashboard extends CI_Controller {
 			
 			 $cookie = array(
 	 
-			   'email'  => 'email',
-			   'value'  => $_POST['login_email'],
+			   'name'  => 'username',
+			   'value'  => $email,
 			   'expire' => '3600',
-			   'domain' => 'your-domain-name',
 			   'path'   => '/',
 			   'secure' => TRUE
 	 
             );
 		
-		 //$this->input->set_cookie($cookie);
+		 $this->input->set_cookie($cookie);
 		 
-		 $this->load->model('admin_model');
-		 $data['userdata'] = $this->admin_model->getUser($_POST['login_email']);
-         $this->load->view('admin/admin_home',$data);
+		 //$this->load->model('admin_model');
+		 //$data['userdata'] = $this->admin_model->getUser($_POST['login_email']);
+         $this->load->view('admin/admin_home');
+		
          
 	
 		 }
@@ -118,14 +134,61 @@ class admin_dashboard extends CI_Controller {
 			 $token = random_string('alnum', 16);
 			 $this->load->model('admin_model');
 			 $data = array('first_name'=> htmlspecialchars($this->input->post('fname', TRUE)), 'last_name'=>htmlspecialchars($this->input->post('lname', TRUE)), 'email'=>htmlspecialchars($this->input->post('signup_email', TRUE)), 'password'=>md5($this->input->post('signup_password', TRUE)), 'phone'=>htmlspecialchars($this->input->post('phone', TRUE)), 'access_token'=>$token);
-			 
 			 $this->admin_model->addAdmin($data);
-			 $this->load->view('admin/admin_signupsuccess');
+			 
+			 // Send Signup Email 
+			 
+			 $this->email->from('amitaajamit@gmail.com', 'Your Name');
+			 $to_email = $this->input->post('signup_email', TRUE); 
+			 $this->email->to($to_email);
+			 $messages = "Hi".$this->input->post('fname', TRUE)." you have successfully completed registration process. We will get back to you soon"; 	 
+			 $this->email->subject('Registration Successful');
+			 $this->email->message($messages);
+			 
+			 if($this->email->send()) :
+			 $this->session->set_flashdata("email_sent","Email sent successfully.");
+             $this->load->view('admin/admin_signupsuccess');		 
+			 else :
+			 $this->session->set_flashdata("email_sent","Error in sending Email."); 
+			 endif;
+			 
+			 
+			 
 		 }
 		
 		
 		
 	}
+	public function forgot()
+	{
+		 
+			$this->form_validation->set_rules('forgot_email', 'Email','required');
+			$token = random_string('alnum', 8);
+			$this->load->model('admin_model');
+			$admin_email = htmlspecialchars($this->input->post('forgot_email', TRUE));
+			$data = array('password'=>md5($token));
+			$this->admin_model->updateAdmin($data,'admin',$admin_email,'email');
+			
+		    // Send Reset Password Email 
+			
+		    $this->email->from('amitaajamit@gmail.com', 'Your Name');
+			$to_email = $this->input->post('forgot_email', TRUE); 
+			$this->email->to($to_email);
+			$messages = "Hi ".$admin_email." your new password is ".$token.". Please change your password after login .Regards Escaro Royale"; 	 
+			$this->email->subject('New Password');
+			$this->email->message($messages);
+			
+			if($this->email->send()) :
+			$this->session->set_flashdata("email_sent","Email sent successfully.");	 
+			else :
+			$this->session->set_flashdata("email_sent","Error in sending Email."); 
+			endif;
+	
+		
+		
+	}
+	
+	
 	
 	function username_check($str)
 	{
@@ -149,7 +212,7 @@ class admin_dashboard extends CI_Controller {
 		if ($this->admin_model->checkAdmin($user))
 		{    
 	
-	        $this->form_validation->set_message('username_check', 'The  %s  already exist');            
+	        $this->form_validation->set_message('admin_check', 'The  %s  already exist');            
 			return false;
 			
 		}
@@ -181,14 +244,17 @@ class admin_dashboard extends CI_Controller {
 	
 	
 	
-	public function logout()
+	public function logout($id)
 	{
 		
-		$this->load->view('admin/admin_login');
+		
+		$this->session->unset_userdata($id);
 		
 		
 		
 	}
+	
+	
 	
 	
 	

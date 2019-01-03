@@ -56,6 +56,12 @@ class admin_model extends CI_Model {
 		}
    }
 	
+	function updateAdmin($param,$table,$user,$colname)
+    {   
+	    $this->db->where('email', $user);
+	    $result = $this->db->update($table,$param);
+		return $result;
+   }
 	
 	
 	

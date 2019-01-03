@@ -93,25 +93,27 @@
 	
 	<!-- END LOGIN FORM -->
 	<!-- BEGIN FORGOT PASSWORD FORM -->
+	<?php echo form_open('admin_dashboard/forgot','class="forget-form"'); ?>
 	
-	<form class="forget-form" action="index.html" method="post">
 		<h3>Forget Password ?</h3>
 		<p>
 			 Enter your e-mail address below to reset your password.
 		</p>
+		
 		<div class="form-group">
 			<div class="input-icon">
 				<i class="fa fa-envelope"></i>
-				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
+				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="forgot_email" value="<?php echo set_value('forgot_email'); ?>"/>
 			</div>
 		</div>
+		<?php echo form_error('forgot_email'); ?>
 		<div class="form-actions">
 			<button type="button" id="back-btn" class="btn btn-default">
 			<i class="m-icon-swapleft"></i> Back </button>
-			<button type="submit" class="btn btn-info pull-right">
-			Submit </button>
+			<?php echo form_submit('Forgot', 'Forgot','class="btn btn-info pull-right"'); ?>
+			
 		</div>
-	</form>
+	<?php echo form_close(); ?>
 	<!-- END FORGOT PASSWORD FORM -->
 	<!-- BEGIN REGISTRATION FORM -->
 	<?php echo form_open('admin_dashboard/register','class="register-form"'); ?>

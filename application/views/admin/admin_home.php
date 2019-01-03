@@ -7,8 +7,8 @@
 	<div class="header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-            <a href="index.html">
-                <img src="assets/img/logo.png" alt="logo"/>
+            <a href="<?php echo base_url('/admin/'); ?>">
+                <img src="<?php echo base_url(); ?>assets/admin/img/logo.png" alt="logo" width="100" height="20">
             </a>
         </div>
         <form class="search-form search-form-header" role="form" action="index.html">
@@ -370,8 +370,10 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 				<img alt="" src="assets/img/avatar3_small.jpg"/>
 				<span class="username username-hide-on-mobile">
-				<?php foreach($userdata as $val){
-				  echo $val->first_name; }  ?> </span>
+				<?php 
+                   echo  $this->session->userdata('fname');
+
+				  ?> </span>
 				<i class="fa fa-angle-down"></i>
 				</a>
 				<ul class="dropdown-menu">
@@ -432,7 +434,7 @@
 					</form>
 				</li>
 				<li class="start active ">
-					<a href="index.html">
+					<a href="<?php echo base_url('/admin/'); ?>">
 					<i class="icon-home"></i>
 					<span class="title">Dashboard</span>
 					<span class="selected"></span>
@@ -817,7 +819,7 @@
 					</a>
 				</li>
 				<li class="last ">
-					<a href="login.html">
+					<a href="<?php //$this->admin_dashboard logout(this->session->userdata('email')); ?>">
 					<i class="icon-user"></i>
 					<span class="title">Login</span>
 					</a>
@@ -924,7 +926,7 @@
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="index.html">Home</a>
+						<a href="<?php echo base_url(); ?>">Home</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
