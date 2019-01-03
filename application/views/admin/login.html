@@ -57,7 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGIN -->
 <div class="content">
 	<!-- BEGIN LOGIN FORM -->
-	<form class="login-form" action="index.html" method="post">
+	<form class="login-form" action="index.html#5" method="post">
 		<h3 class="form-title">Login to your account</h3>
 		<div class="alert alert-danger display-hide">
 			<button class="close" data-close="alert"></button>
@@ -468,12 +468,15 @@ License: You must have a valid license purchased only from themeforest(the above
 jQuery(document).ready(function() {     
   App.init();
   Login.init();
-  var action = location.hash.substr(1);
-          if (action == 'createaccount') {
+  var action = location.hash;
+alert(action);
+          if (action == '#5') {
+		   alert(action);
               $('.register-form').show();
               $('.login-form').hide();
               $('.forget-form').hide();
           } else if (action == 'forgetpassword')  {
+		     alert(action);
               $('.register-form').hide();
               $('.login-form').hide();
               $('.forget-form').show();

@@ -60,6 +60,13 @@ class MY_Form_validation extends CI_Form_validation
         return parent::run($group);
     }
 
+	public function __construct()
+    {
+        parent::__construct();
+
+        $this->_error_prefix = '<p class="error">*';
+        $this->_error_suffix = '</p>';
+    }
     // ------------------------------------------------------------------------
 
 }   // End of MY_Form_validation Class.

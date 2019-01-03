@@ -223,17 +223,20 @@
 jQuery(document).ready(function() {     
   App.init();
   Login.init();
-  /*var action = location.hash.substr(1);
-          if (action == 'createaccount') {
+ 
+  var action = window.location.href;
+  
+          if (action == 'http://localhost/escaro-git/index.php/admin_dashboard/register') {
               $('.register-form').show();
               $('.login-form').hide();
               $('.forget-form').hide();
-          } else if (action == 'forgetpassword')  {
+          } else if (action == 'http://localhost/escaro-git/index.php/admin_dashboard/forgot')  {
+			  
               $('.register-form').hide();
               $('.login-form').hide();
               $('.forget-form').show();
           }
-		  */
+		  
 });
 </script>
 <!-- END JAVASCRIPTS -->

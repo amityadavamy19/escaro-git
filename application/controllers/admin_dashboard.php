@@ -58,7 +58,7 @@ class admin_dashboard extends CI_Controller {
 	
 	public function login()
 	{
-		 
+		 //$this->form_validation->set_rules('login_email', 'Email','required');
 		 $this->form_validation->set_rules('login_email', 'Email','required|callback_username_check');
 		 $this->form_validation->set_rules('login_password', 'Password', 'callback_password_check');
 		
@@ -117,6 +117,7 @@ class admin_dashboard extends CI_Controller {
 		$this->form_validation->set_rules('fname', 'First Name','trim|required|alpha');
 		$this->form_validation->set_rules('lname', 'Last Name','trim|required|alpha');
 		$this->form_validation->set_rules('phone', 'Phone','trim|required|numeric');
+		//$this->form_validation->set_rules('signup_email', 'Email','required');
 		$this->form_validation->set_rules('signup_email', 'Email','callback_admin_check');
 		$this->form_validation->set_rules('signup_password', 'Password', 'trim|required|min_length[5]|max_length[12]');
 		$this->form_validation->set_rules('signup_rpassword', 'Password', 'trim|required|matches[signup_password]');
@@ -162,7 +163,14 @@ class admin_dashboard extends CI_Controller {
 	public function forgot()
 	{
 		 
-			$this->form_validation->set_rules('forgot_email', 'Email','required');
+			//$this->form_validation->set_rules('forgot_email', 'Email','required');
+			$this->form_validation->set_rules('forgot_email', 'Email','required|callback_username_check');
+			if ($this->form_validation->run() == FALSE)
+            {
+             $this->load->view('admin/admin_login');
+            }
+            else
+            {
 			$token = random_string('alnum', 8);
 			$this->load->model('admin_model');
 			$admin_email = htmlspecialchars($this->input->post('forgot_email', TRUE));
@@ -184,7 +192,7 @@ class admin_dashboard extends CI_Controller {
 			$this->session->set_flashdata("email_sent","Error in sending Email."); 
 			endif;
 	
-		
+			}
 		
 	}
 	
@@ -200,7 +208,7 @@ class admin_dashboard extends CI_Controller {
 		}
 		else
 		{
-			$this->form_validation->set_message('username_check', 'The  %s  do not exist');            
+			$this->form_validation->set_message('username_check', 'The  %s  do not exist, should not be blank');            
 			return false;
 		}
 	}
@@ -244,11 +252,17 @@ class admin_dashboard extends CI_Controller {
 	
 	
 	
-	public function logout($id)
-	{
+	public function logout()
+	{   
+	
+	   // echo $this->session->userdata('fname');
+		$uemail = $this->session->userdata('email');
 		
+		//$this->session->unset_userdata($uemail);
+        $this->session->sess_destroy();
+	    
+		redirect('admin_dashboard/login');
 		
-		$this->session->unset_userdata($id);
 		
 		
 		

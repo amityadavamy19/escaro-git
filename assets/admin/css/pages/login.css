@@ -36,6 +36,10 @@ Login page
   color: #222;
 }
 
+.error  {
+  color: red !important;
+}
+
 .login .content .login-form,
 .login .content .forget-form {
     padding: 0px;

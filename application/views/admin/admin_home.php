@@ -396,7 +396,7 @@
 					<li class="divider">
 					</li>
 					<li>
-						<a href="login.html"><i class="fa fa-key"></i> Log Out</a>
+						<a href="<?php echo base_url(); ?>index.php/admin_dashboard/logout"><i class="fa fa-key"></i> Log Out</a>
 					</li>
 				</ul>
 			</li>
@@ -819,7 +819,7 @@
 					</a>
 				</li>
 				<li class="last ">
-					<a href="<?php //$this->admin_dashboard logout(this->session->userdata('email')); ?>">
+					<a href="<?php //$this->logout(this->session->userdata('email')); ?>">
 					<i class="icon-user"></i>
 					<span class="title">Login</span>
 					</a>
