@@ -268,6 +268,35 @@ class admin_dashboard extends CI_Controller {
 		
 	}
 	
+	// Admin Profile Update
+	
+	public function profile()
+	{
+		
+	// missing UI
+		
+	}
+	
+	public function add_page()
+	{
+		$this->load->view('admin/add_pages');
+		$date = date('d-m-Y');
+		if($this->input->post('addpage') !='')
+		{
+			$data = array('page_name'=> htmlspecialchars($this->input->post('page_name', TRUE)), 'page_title'=>htmlspecialchars($this->input->post('page_title', TRUE)), 'page_content'=>htmlspecialchars($this->input->post('page_content', TRUE)), 'page_image'=>md5($this->input->post('page_image', TRUE)), 'status'=>('Active'), 'date_created'=>$date);
+			
+			$this->admin_model->addAdmin($data);
+		}
+		else
+		{    
+	
+	        $this->session->set_flashdata('message', 'Error in adding pages!');
+			//in view
+			$this->session->flashdata('message');
+		}
+		
+	}
+	
 	
 	
 	

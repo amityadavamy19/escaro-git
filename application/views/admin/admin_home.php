@@ -7,7 +7,7 @@
 	<div class="header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-            <a href="<?php echo base_url('/admin/'); ?>">
+            <a href="<?php echo base_url('/index.php/admin_dashboard/'); ?>">
                 <img src="<?php echo base_url(); ?>assets/admin/img/logo.png" alt="logo" width="100" height="20">
             </a>
         </div>
@@ -499,6 +499,10 @@
 						</li>
 					</ul>
 				</li>
+				<!----Page Manager---->
+				
+				
+				
 				<li >
 					<a href="javascript:;">
 					<i class="icon-present"></i>
@@ -616,7 +620,15 @@
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
+					   <li>
+					   <a href="<?=base_url()."index.php/admin_dashboard/add_page" ?>">Add Page</a>
+							
+						</li>
 						<li>
+							 <a href="<?=base_url()."index.php/admin_dashboard/view_page" ?>">View Page</a>
+						</li>
+					
+						<!--<li>
 							<a href="page_inbox.html">
 							<span class="badge badge-important">4</span>Inbox</a>
 						</li>
@@ -679,7 +691,7 @@
 						<li>
 							<a href="page_500_option2.html">
 							500 Page Option 2</a>
-						</li>
+						</li>-->
 					</ul>
 				</li>
 				<li>

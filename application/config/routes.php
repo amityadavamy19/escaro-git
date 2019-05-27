@@ -52,6 +52,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'admin_dashboard';
 $route['admin'] = 'admin_dashboard';
 $route['logout'] = 'admin_dashboard/logout';
+$route['profile'] = 'admin_dashboard/profile';
+$route['add_page'] = 'admin_dashboard/add_page';
+$route['view_page'] = 'admin_dashboard/view_page';
+$route['edit_page'] = 'admin_dashboard/edit_page';
+
 
 
 
