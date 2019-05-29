@@ -64,5 +64,46 @@ class admin_model extends CI_Model {
    }
 	
 	
+	function addRecord($data,$table)
+    {   
+	
+	    $result = $this->db->insert($table,$data);
+		return $result;
+   }
+	
+	function viewAllRecord($table)
+	{
+		
+		$query = $this->db->get($table);
+
+		if ( $query->num_rows() > 0 )
+		{
+			$row = $query->row_array();
+			return $row;
+		}
+		
+	}
+	
+	function viewRecord($arg,$table,$lim)
+	{
+		
+		if($lim != '')
+		{
+			$query = $this->db->get_where($table,$arg,$lim);
+		}else
+		{
+			$query = $this->db->get_where($table,$arg);
+		}
+		
+		
+
+		if ( $query->num_rows() > 0 )
+		{
+			$row = $query->row_array();
+			return $row;
+		}
+		
+		
+	}
 	
 }

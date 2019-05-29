@@ -24,10 +24,27 @@ class admin_dashboard extends CI_Controller {
 		parent::__construct(); 
 		$this->load->library('form_validation');
 		$this->load->helper('string'); 
+		
+		
+		
+		// Ckeditor Initialization 
+		$this->load->library('ckeditor');
+		$this->load->library('ckfinder');
+
+		$this->ckeditor->basePath = base_url().'assets/ckeditor/';
+		$this->ckeditor->config['toolbar'] = array(
+						array( 'Source', '-', 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList' )
+															);
+		$this->ckeditor->config['language'] = 'it';
+		$this->ckeditor->config['width'] = '900px';
+		$this->ckeditor->config['height'] = '300px';            
+
+        //Add Ckfinder to Ckeditor
+        //$this->ckfinder->SetupCKEditor($this->ckeditor,'../../assets/ckfinder/'); 
 		 
 	 } 
 	 
-	 
+		
 	 
 	 
 	public function index()
@@ -277,23 +294,60 @@ class admin_dashboard extends CI_Controller {
 		
 	}
 	
+	
 	public function add_page()
 	{
 		$this->load->view('admin/add_pages');
 		$date = date('d-m-Y');
-		if($this->input->post('addpage') !='')
+		if(isset($_POST['addpage']))
 		{
-			$data = array('page_name'=> htmlspecialchars($this->input->post('page_name', TRUE)), 'page_title'=>htmlspecialchars($this->input->post('page_title', TRUE)), 'page_content'=>htmlspecialchars($this->input->post('page_content', TRUE)), 'page_image'=>md5($this->input->post('page_image', TRUE)), 'status'=>('Active'), 'date_created'=>$date);
 			
-			$this->admin_model->addAdmin($data);
+			     //Image Uploading Config 
+			 
+			     $config['upload_path']   = './uploads/'; 
+				 $config['allowed_types'] = 'gif|jpg|png'; 
+				 $config['max_size']      = 100000; 
+				 $config['max_width']     = 2400; 
+				 $config['max_height']    = 2400; 
+ 			 
+				 $this->load->library('upload', $config);
+				 
+				 if ( ! $this->upload->do_upload('page_image'))
+				 {
+					 $this->session->set_flashdata('message', $this->upload->display_errors());
+					 
+								
+				 }else
+				 {
+					 $image = array($this->upload->data());
+					 $this->session->set_flashdata('message', 'Success! Page Added');
+					 
+				 }
+					 
+			
+				$data = array('page_name'=> htmlspecialchars($this->input->post('page_name', TRUE)), 'page_title'=>htmlspecialchars($this->input->post('page_title', TRUE)), 'page_content'=>htmlspecialchars($this->input->post('page_content', TRUE)), 'page_image' => $image[0]['file_name'], 'status'=>('Active'), 'date_created'=>$date);
+				
+				
+				$this->load->model('admin_model');
+				$this->admin_model->addRecord($data,'tbl_pages');
+				$this->load->view('admin/add_pages');
 		}
 		else
 		{    
 	
-	        $this->session->set_flashdata('message', 'Error in adding pages!');
-			//in view
-			$this->session->flashdata('message');
+	            $this->session->set_flashdata('message', 'Error in adding pages!');
+			
 		}
+		
+	}
+	
+	public function view_page()
+	{
+		
+		$this->load->view('admin/view_pages'); 
+		
+		
+		
 		
 	}
 	

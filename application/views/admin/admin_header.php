@@ -42,4 +42,5 @@ Contact: amityadavamy19@gmail.com/
 <?php echo link_tag('assets/admin/css/custom.css'); ?>
 <!-- END THEME STYLES -->
 <link rel="shortcut icon" href="favicon.ico"/>
+
 </head>

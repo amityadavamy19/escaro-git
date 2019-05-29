@@ -65,6 +65,8 @@ jQuery(document).ready(function() {
    Tasks.initDashboardWidget();
 });
 </script>
+<script type="text/javascript" src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/ckfinder/ckfinder.js"></script>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

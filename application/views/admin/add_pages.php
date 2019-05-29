@@ -992,7 +992,7 @@
 							
 							<div class="post-comment">
 								
-								<?php echo form_open('admin_dashboard/add_page','class=form"'); ?>
+								<?php echo form_open_multipart('admin_dashboard/add_page','class=form"'); ?>
 								
 									<div class="form-group">
 										<label class="control-label">Page Name<span class="required">
@@ -1012,7 +1012,8 @@
 										<label class="control-label">Page Content<span class="required">
 										* </span>
 										</label>
-										<textarea class="col-md-10 form-control" name="page_content" rows="8" required ></textarea>
+										<?php echo $this->ckeditor->editor("page_content"); ?>
+										
 									</div>
 									<div class="form-group">
 										<label class="control-label">Page Image<span class="required">
@@ -1022,7 +1023,7 @@
 										<input class="form-control" name="page_image" type="file" required />
 									</div>
 									
-									<button class="margin-top-20 btn btn-info" type="submit" name="addpage">Add Page</button>
+									<button class="margin-top-20 btn btn-info" type="submit" name="addpage"  >Add Page</button>
 								<?php echo form_close(); ?>
 							</div>
 							
