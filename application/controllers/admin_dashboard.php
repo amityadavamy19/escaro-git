@@ -344,13 +344,21 @@ class admin_dashboard extends CI_Controller {
 	public function view_page()
 	{
 		
-		$this->load->view('admin/view_pages'); 
-		
-		
-		
-		
+		$this->load->model('admin_model');
+		$data['response'] = $this->admin_model->viewAllRecord('tbl_pages');
+		$this->load->view('admin/view_pages',$data);
+		 
 	}
 	
+	public function update_page($id)
+	{
+		
+		$this->load->model('admin_model');
+		$data['update'] = $this->admin_model->viewRecord('tbl_pages',$id);
+		
+		$this->load->view('admin/edit_pages',$data);
+		 
+	}
 	
 	
 	

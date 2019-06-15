@@ -78,7 +78,7 @@ class admin_model extends CI_Model {
 
 		if ( $query->num_rows() > 0 )
 		{
-			$row = $query->row_array();
+			$row = $query->result_array();
 			return $row;
 		}
 		
